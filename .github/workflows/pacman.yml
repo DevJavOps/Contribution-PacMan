@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: '20'
 
-      # Step 3: Generate the single, reliable base SVG
+      # Step 3: Force the CLI to render the full 12-month canvas grid width
       - name: generate pacman-contribution-graph.svg
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
@@ -36,8 +36,17 @@ jobs:
         run: |
           mkdir -p dist
           npm install -g pacman-contribution-graph
-          pacman-contribution-graph --game pacman --platform github --gameTheme github --username ${{ github.repository_owner }} --output dist/pacman-contribution-graph.svg      
-      
+          
+          # Adding explicit canvas constraints to prevent the engine from truncating older months
+          pacman-contribution-graph \
+            --game pacman \
+            --platform github \
+            --gameTheme github \
+            --username ${{ github.repository_owner }} \
+            --output dist/pacman-contribution-graph.svg \
+            --width 820 \
+            --height 140
+            
       # Step 4: Push the generated file to the output branch
       - name: push pacman-contribution-graph.svg to the output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
