@@ -39,8 +39,8 @@ jobs:
           # Light version
           pacman-contribution-graph --game pacman --platform github --gameTheme github --username ${{ github.repository_owner }} --output dist/pacman-contribution-graph.svg
           
-          # Dark version
-          pacman-contribution-graph --game pacman --platform github --gameTheme github-dark --username ${{ github.repository_owner }} --output dist/pacman-contribution-graph-dark.svg
+          # Dark version - explicitly declaring platform rules alongside dark theme
+          pacman-contribution-graph --game pacman --platform github --gameTheme github-dark --username ${{ github.repository_owner }} --output dist/pacman-contribution-graph-dark.svg      
       
       # Step 4: Push the generated file to the output branch
       - name: push pacman-contribution-graph.svg to the output branch
