@@ -28,19 +28,15 @@ jobs:
         with:
           node-version: '20'
 
-      # Step 3: Generate both Light and Dark theme SVGs
+      # Step 3: Generate the single, reliable base SVG
       - name: generate pacman-contribution-graph.svg
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mkdir -p dist
           npm install -g pacman-contribution-graph
-          
-          # Light version
-          pacman-contribution-graph --game pacman --platform github --gameTheme github --username ${{ github.repository_owner }} --output dist/pacman-contribution-graph.svg
-          
-          # Dark version - explicitly declaring platform rules alongside dark theme
-          pacman-contribution-graph --game pacman --platform github --gameTheme github-dark --username ${{ github.repository_owner }} --output dist/pacman-contribution-graph-dark.svg      
+          pacman-contribution-graph --game pacman --platform github --gameTheme github --username ${{ github.repository_owner }} --output dist/pacman-contribution-graph.svg      
       
       # Step 4: Push the generated file to the output branch
       - name: push pacman-contribution-graph.svg to the output branch
